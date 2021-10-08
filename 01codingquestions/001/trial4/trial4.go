@@ -7,7 +7,6 @@ import (
 )
 
 // main function
-//newbranch
 func main() {
 	var balance int = 9563
 	var amount int
