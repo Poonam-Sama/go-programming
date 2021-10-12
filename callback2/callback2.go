@@ -13,6 +13,8 @@ func main() {
 	fmt.Println(s, m, s1, m1)
 
 }
+
+//check
 func add(x, y int) int {
 	z := x + y
 	return z
