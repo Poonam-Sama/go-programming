@@ -6,7 +6,8 @@ import (
 )
 
 type user struct {
-	my_balance      int
+	my_balance int
+	// txn_times_limit means per day limit of transaction times
 	txn_times_limit int
 }
 
@@ -23,12 +24,12 @@ func main() {
 
 	for i := 1; i > 0; i++ {
 
-		x := "Press 1 : for balance check\nPress 2 : withdraw money\nPress any other key : for exit "
+		x := "Press 1 : for balance check\nPress 2 : Withdraw money\nPress any other key : for exit "
 		fmt.Println(x)
 		fmt.Scanln(&option)
 		switch {
 		case option == "1":
-			fmt.Println("your current balance is", user_1.my_balance)
+			fmt.Println("Your current balance is", user_1.my_balance)
 
 		case option == "2":
 			fmt.Println("Enter the amount you want to withdraw ")
@@ -47,7 +48,7 @@ func main() {
 						user_1.txn_times_limit--
 						fmt.Println("Number of trsnsaction left for a day: ", user_1.txn_times_limit)
 					} else {
-						fmt.Println("per day transaction limit exceeded")
+						fmt.Println("Per day transaction limit exceeded")
 					}
 
 				}
@@ -75,7 +76,7 @@ func withdraw(x *user, amount_wid int) {
 	print_note(amount_wid)
 	x.my_balance = x.my_balance - amount_wid
 
-	fmt.Println("your remaining balance is ", x.my_balance)
+	fmt.Println("Your remaining balance is ", x.my_balance)
 
 }
 
@@ -84,11 +85,11 @@ func valid_amount(r *user, amount_wid int) bool {
 	min_balance = 100
 
 	if amount_wid > 5000 {
-		fmt.Println("max limit of withdraw is 5000")
+		fmt.Println("Max limit of withdraw is 5000")
 		return false
 	}
 	if amount_wid > (r.my_balance - min_balance) {
-		fmt.Println("balance is insufficient")
+		fmt.Println("Balance is insufficient")
 		return false
 	}
 	if amount_wid < 0 {
@@ -97,7 +98,7 @@ func valid_amount(r *user, amount_wid int) bool {
 	}
 	if amount_wid%100 != 0 {
 		if amount_wid < 100 {
-			fmt.Println("min 100 rupees can be transacted")
+			fmt.Println("Min 100 rupees can be transacted")
 		} else {
 			fmt.Println("amount is not multiple of 100")
 		}
