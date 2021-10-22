@@ -40,6 +40,7 @@ func main() {
 
 		case (option == "2" && user_1.txn_times_limit > 0 && user_1.my_balance > 100):
 			pass := 1
+			count_1 := 0
 			for pass > 0 {
 
 				fmt.Println("Enter the amount you want to withdraw ")
@@ -49,6 +50,10 @@ func main() {
 
 				if err != nil {
 					fmt.Printf("%s is not a valid integer\n", amount_wid)
+					count_1++
+					if count_1 == 3 {
+						pass = -1
+					}
 				} else {
 					// fmt.Printf("%s correct input %d\n", amount_wid, val)
 
@@ -65,29 +70,37 @@ func main() {
 								pass_1 = -1
 							}
 							for pass_1 > 0 && user_1.txn_times_limit > 0 {
+								if user_1.my_balance > 100 {
+									var choose string
+									fmt.Println("Do you want to withdraw again?")
+									fmt.Println("choose Y for yes and N for no")
+									fmt.Scanln(&choose)
 
-								var choose string
-								fmt.Println("Do you want to withdraw again?")
-								fmt.Println("choose Y for yes and N for no")
-								fmt.Scanln(&choose)
-
-								switch {
-								case choose == "Y" || choose == "y":
-									pass = 1
-									pass_1 = -1
-
-								case choose == "N" || choose == "n":
-									pass = -1
-									pass_1 = -1
-
-								default:
-									fmt.Println("Please enter valid keyword")
-									count++
-									// we are allowing maximum three wrong inputs.
-									if count == 3 {
+									switch {
+									case choose == "Y" || choose == "y":
+										pass = 1
 										pass_1 = -1
+
+									case choose == "N" || choose == "n":
 										pass = -1
+										pass_1 = -1
+
+									default:
+										fmt.Println("Please enter valid keyword")
+										count++
+										// we are allowing maximum three wrong inputs.
+										if count == 3 {
+											pass_1 = -1
+											pass = -1
+										}
+
 									}
+
+								}
+								if user_1.my_balance < 100 {
+									fmt.Println("Your balance is less than minimum balance")
+									pass_1 = -1
+									pass = -1
 
 								}
 
@@ -132,28 +145,26 @@ func withdraw(x *user, amount_wid int) {
 }
 
 func valid_amount(r *user, amount_wid int) bool {
-	min_balance := 100
+	//	min_balance := 100
 
 	if amount_wid > 5000 {
 		fmt.Println("Max limit of withdraw is 5000")
 		return false
 	}
-	if amount_wid > (r.my_balance - min_balance) {
-		if r.my_balance >= amount_wid {
-			fmt.Println("Withdrawl can't be made as minimum balance in your account should be 100 rupees")
-		} else {
-			fmt.Println("Balance is insufficient")
-		}
-		return false
-	}
-	if amount_wid < 0 {
-		fmt.Println("Negative amount is not permitted")
-		return false
-	}
-	if amount_wid%100 != 0 {
-		fmt.Println("Amount is not multiple of 100")
+	// if r.my_balance < min_balance {
+	// 	fmt.Println("Balance is insufficient to withdrawal")
+
+	// 	return false
+	// }
+	if amount_wid <= 0 {
+		fmt.Println("Zero or negative amount is not permitted")
 		return false
 	} else {
+
+		//	if amount_wid%100 != 0 {
+		//		fmt.Println("Amount is not multiple of 100")
+		//		return false
+		//	} else {
 		return true
 	}
 }
