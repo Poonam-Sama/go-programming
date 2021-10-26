@@ -56,7 +56,7 @@ func main() {
 					}
 				} else {
 
-					if valid_amount(val) {
+					if valid_amount(user_1, val) {
 						if user_1.txn_times_limit > 0 {
 
 							print_note(val)
@@ -133,20 +133,25 @@ func print_note(amount_wid int) {
 
 }
 
-func valid_amount(amount_wid int) bool {
+func valid_amount(r user, amount_wid int) bool {
 
 	if amount_wid > 5000 {
-		fmt.Println("Max limit of withdraw is 5000")
+		fmt.Println("Maximum limit of withdraw is 5000.")
 		return false
 	}
 
 	if amount_wid <= 0 {
-		fmt.Println("Zero or negative amount is not permitted")
+		fmt.Println("Zero or negative amount is not permitted.")
 		return false
 	}
 
 	if amount_wid%100 != 0 {
-		fmt.Println("Amount is not multiple of 100")
+		fmt.Println("Amount is not multiple of 100.")
+		return false
+	}
+
+	if amount_wid > r.my_balance {
+		fmt.Println("This amount is unsufficient to withdrawal.\nPlease enter amount less than your current balance.")
 		return false
 	} else {
 		return true
