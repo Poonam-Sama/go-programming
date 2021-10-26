@@ -56,20 +56,6 @@ func main() {
 					}
 				} else {
 
-					// if !valid_amount(user_1, val) {
-					// 	fmt.Println("choose 1 for amount withdrawal and any other key to exit")
-					// 	var option_1 string
-					// 	fmt.Scanln(&option_1)
-					// 	switch {
-					// 	case option_1 == "1":
-					// 		pass = -1
-
-					// 	default:
-					// 		pass = -1
-					// 		i = -1
-					// 	}
-
-					//	}
 					if valid_amount(user_1, val) {
 						if user_1.txn_times_limit > 0 {
 
