@@ -55,16 +55,19 @@ func main() {
 						pass = -1
 					}
 				} else {
-					// fmt.Printf("%s correct input %d\n", amount_wid, val)
 
 					if valid_amount(val) {
 						if user_1.txn_times_limit > 0 {
-							withdraw(&user_1, val)
+
+							print_note(val)
+							user_1.my_balance = user_1.my_balance - val
+							fmt.Println("Your remaining balance is ", user_1.my_balance)
+
 							user_1.txn_times_limit--
 							fmt.Println("Number of trsnsaction left for a day: ", user_1.txn_times_limit)
 
 							pass_1 := 1
-							count := 0
+
 							if user_1.txn_times_limit == 0 {
 								pass = -1
 								pass_1 = -1
@@ -87,12 +90,6 @@ func main() {
 
 									default:
 										fmt.Println("Please enter valid keyword")
-										count++
-										// we are allowing maximum three wrong inputs.
-										if count == 3 {
-											pass_1 = -1
-											pass = -1
-										}
 
 									}
 
@@ -121,6 +118,7 @@ func main() {
 			i = -1
 		}
 	}
+	fmt.Println("Thank You for choosing us.")
 
 }
 
@@ -132,15 +130,6 @@ func print_note(amount_wid int) {
 	z = (amount_wid - (x*500 + y*200)) / 100
 
 	fmt.Printf("Your transaction is successful\nNote detais : %d*500+%d*200+%d*100\n", x, y, z)
-	fmt.Println("Thank you")
-}
-
-func withdraw(x *user, amount_wid int) {
-
-	print_note(amount_wid)
-	x.my_balance = x.my_balance - amount_wid
-
-	fmt.Println("Your remaining balance is ", x.my_balance)
 
 }
 
@@ -162,4 +151,5 @@ func valid_amount(amount_wid int) bool {
 	} else {
 		return true
 	}
+
 }
