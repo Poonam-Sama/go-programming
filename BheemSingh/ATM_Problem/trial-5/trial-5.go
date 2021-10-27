@@ -42,7 +42,7 @@ func main() {
 
 		case (option == "2" && user_1.txn_times_limit > 0 && user_1.my_balance > 100):
 			pass := 1
-			count_1 := 0
+
 			for pass > 0 {
 
 				fmt.Println("Enter the amount you want to withdraw ")
@@ -52,10 +52,19 @@ func main() {
 
 				if err != nil {
 					fmt.Printf("%s is not a valid integer\n", amount_wid)
-					count_1++
-					if count_1 == 3 {
+
+					fmt.Println("Enter Y for continue or any other key to exit")
+					var option_2 string
+					fmt.Scanln(&option_2)
+					switch {
+					case option_2 == "Y" || option_2 == "y":
+						pass = 1
+
+					default:
 						pass = -1
+
 					}
+
 				} else {
 
 					if validateAmount(user_1, val) {
