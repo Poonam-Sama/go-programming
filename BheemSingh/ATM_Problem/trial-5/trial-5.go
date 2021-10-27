@@ -6,8 +6,7 @@ import (
 )
 
 type user struct {
-	my_balance int
-	// txn_times_limit means per day limit of transaction times
+	my_balance      int
 	txn_times_limit int
 }
 
@@ -17,22 +16,25 @@ func main() {
 		my_balance:      9563,
 		txn_times_limit: 5,
 	}
-	var option string
 
-	// amount_wid means amount to be withdrawal
+	var option string
 	var amount_wid string
 
 	for i := 1; i > 0; i++ {
 
 		x := "Press 1 : for balance check"
 		fmt.Println(x)
+
 		if user_1.txn_times_limit > 0 && user_1.my_balance > 100 {
 			y := "Press 2 : Withdraw money"
 			fmt.Println(y)
 		}
+
 		z := "Press any other key : for exit "
 		fmt.Println(z)
+
 		fmt.Scanln(&option)
+
 		switch {
 		case option == "1":
 			fmt.Println("Your current balance is", user_1.my_balance)
@@ -56,15 +58,15 @@ func main() {
 					}
 				} else {
 
-					if valid_amount(user_1, val) {
+					if validateAmount(user_1, val) {
 						if user_1.txn_times_limit > 0 {
 
-							print_note(val)
+							printDenominations(val)
 							user_1.my_balance = user_1.my_balance - val
 							fmt.Println("Your remaining balance is ", user_1.my_balance)
 
 							user_1.txn_times_limit--
-							fmt.Println("Number of trsnsaction left for a day: ", user_1.txn_times_limit)
+							fmt.Println("Number of transaction left for a day: ", user_1.txn_times_limit)
 
 							pass_1 := 1
 
@@ -133,7 +135,7 @@ func main() {
 
 }
 
-func print_note(amount_wid int) {
+func printDenominations(amount_wid int) {
 
 	var x, y, z int
 	x = amount_wid / 500
@@ -144,7 +146,7 @@ func print_note(amount_wid int) {
 
 }
 
-func valid_amount(r user, amount_wid int) bool {
+func validateAmount(r user, amount_wid int) bool {
 
 	if amount_wid > 5000 {
 		fmt.Println("Maximum limit of withdraw is 5000.")
