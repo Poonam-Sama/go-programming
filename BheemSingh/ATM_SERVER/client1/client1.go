@@ -76,13 +76,17 @@ func main() {
 					i := countInt > 0
 					for i {
 						fmt.Println("Do you want to withdraw again?")
+
 						fmt.Println("choose Y for yes and N for no")
+
 						fmt.Scanln(&choose)
+
 						if choose == "N" || choose == "n" {
 							i = false
 						} else if choose == "Y" || choose == "y" {
 							i = false
 						} else {
+
 							fmt.Println("Invalid Input!! \nPlease Choose from Y or N")
 						}
 					}
@@ -90,6 +94,7 @@ func main() {
 						break
 					}
 				}
+
 				if status == "100\n" {
 					fmt.Println("Max limit of withdraw is 5000")
 				}
@@ -102,7 +107,20 @@ func main() {
 				if status == "400\n" {
 					fmt.Println("Please enter valid amount")
 				}
+
+				if status == "100\n" || status == "200\n" || status == "300\n" || status == "400\n" {
+					fmt.Println("Press Y for continue or any other key to exit")
+					var option_1 string
+					fmt.Scanln(&option_1)
+					if option_1 == "Y" || option_1 == "y" {
+						continue
+					} else {
+						break
+					}
+
+				}
 			}
+
 			continue
 		default:
 			conn.Close()
