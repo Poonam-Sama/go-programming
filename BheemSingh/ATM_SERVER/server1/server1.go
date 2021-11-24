@@ -21,11 +21,18 @@ func main() {
 		txn_times_limit: 5,
 	}
 
-	service := ":7777"
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
-	checkError(err)
+	listener, err := net.Listen("tcp", ":8080")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer listener.Close()
 
-	listener, err := net.ListenTCP("tcp", tcpAddr)
+	// service := ":7777"
+	// tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
+	// checkError(err)
+
+	// listener, err := net.ListenTCP("tcp", tcpAddr)
 	checkError(err)
 
 	for {
@@ -88,6 +95,7 @@ func main() {
 
 			default:
 				conn.Write([]byte("exit"))
+				conn.Close()
 				return
 
 			}
