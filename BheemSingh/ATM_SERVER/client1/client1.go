@@ -11,15 +11,21 @@ import (
 
 func main() {
 
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s host:port ", os.Args[0])
-		os.Exit(1)
+	conn, err := net.Dial("tcp", ":8080")
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	service := os.Args[1]
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
-	checkError(err)
-	conn, err := net.DialTCP("tcp", nil, tcpAddr)
-	checkError(err)
+
+	// if len(os.Args) != 2 {
+	// 	fmt.Fprintf(os.Stderr, "Usage: %s host:port ", os.Args[0])
+	// 	os.Exit(1)
+	// }
+	// service := os.Args[1]
+	// tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
+	// checkError(err)
+	// conn, err := net.DialTCP("tcp", nil, tcpAddr)
+	// checkError(err)
 
 	for {
 		x := "Press 1 : for balance check"
@@ -123,7 +129,10 @@ func main() {
 
 			continue
 		default:
-			conn.Close()
+			fmt.Fprint(conn, "3"+"\n")
+			exit_status, _ := bufio.NewReader(conn).ReadString('\n')
+			exit_status = strings.TrimSuffix(exit_status, "\n")
+			fmt.Println(exit_status)
 			return
 		}
 
