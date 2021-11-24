@@ -41,6 +41,7 @@ func main() {
 			fmt.Println("continue")
 			continue
 		}
+		defer conn.Close()
 
 		for {
 			netData, err := bufio.NewReader(conn).ReadString('\n')
