@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,7 +9,7 @@ import (
 var getbody string
 
 type amountJson struct {
-	Input string `json:"amount" `
+	Input int `json:"amount" `
 }
 
 func main() {
@@ -29,8 +28,9 @@ func main() {
 		var amount_wid amountJson
 		c.BindJSON(&amount_wid)
 		fmt.Println(amount_wid.Input)
+
 		c.JSON(200, gin.H{
-			"result": post(amount_wid.Input, &balance, &txn_times_limit)})
+			"result": makeTransaction(amount_wid.Input, &balance, &txn_times_limit)})
 		getbody = ""
 	})
 
@@ -38,13 +38,7 @@ func main() {
 
 }
 
-func post(amount_wid string, balance *int, txn_times_limit *int) string {
-
-	var amount_wid_int int
-	amount_wid_int, err := strconv.Atoi(amount_wid)
-	if err != nil {
-		return "Not a valid integer."
-	}
+func makeTransaction(amount_wid int, balance *int, txn_times_limit *int) string {
 
 	if *txn_times_limit < 1 {
 		getbody += " " + "Per day transaction attempts limit exceeded"
@@ -52,32 +46,34 @@ func post(amount_wid string, balance *int, txn_times_limit *int) string {
 
 	}
 
-	error_code, amount_wid_int := amt_valid(amount_wid_int, *balance)
+	errorCode, amount_wid := amountValidate(amount_wid, *balance)
 
-	switch error_code {
+	switch errorCode {
 	case 0:
 		getbody += " " + "Maximum limit of withdraw is 5000."
-		break
+
 	case 1:
-		getbody += " " + "Zero or negative amount is not permitted."
-		break
+		getbody += " " + "Negative amount is not permitted."
+
 	case 2:
 		getbody += " " + "Amount is not multiple of 100."
-		break
+
 	case 3:
 		getbody += " " + "This amount is unsufficient to withdrawal."
-		break
+	case 10:
+
+		getbody += " " + "Please enter a natural number"
+
 	default:
 
-		*balance = *balance - amount_wid_int
-		x := printDenominations(amount_wid_int)
+		*balance = *balance - amount_wid
+		x := printDenominations(amount_wid)
 		getbody += " " + x
 		y := fmt.Sprintf("Your remaining balance is %d\n", *balance)
 		getbody += " " + y
 		*txn_times_limit--
 		z := fmt.Sprintf("Remaining attempts for transactions is %d", *txn_times_limit)
 		getbody += " " + z
-		break
 
 	}
 	return getbody
@@ -93,14 +89,18 @@ func printDenominations(amount_wid int) string {
 	return i
 }
 
-func amt_valid(amount_wid int, balance int) (int, int) {
+func amountValidate(amount_wid int, balance int) (int, int) {
+	if amount_wid == 0 {
+		fmt.Println("Please enter a natural number")
+		return 10, amount_wid
+	}
 	if amount_wid > 5000 {
 		fmt.Println("Maximum limit of withdraw is 5000.")
 		return 0, amount_wid
 	}
 
-	if amount_wid < 0 || amount_wid == 0 {
-		fmt.Println("Zero or negative amount is not permitted.")
+	if amount_wid < 0 {
+		fmt.Println("Negative amount is not permitted.")
 		return 1, amount_wid
 	}
 
