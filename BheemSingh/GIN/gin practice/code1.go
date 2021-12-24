@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +10,7 @@ import (
 var getbody string
 
 type amountJson struct {
-	Input int `json:"amount" `
+	Input string `json:"amount" `
 }
 
 func main() {
@@ -37,9 +38,13 @@ func main() {
 
 }
 
-func post(amount_wid int, balance *int, txn_times_limit *int) string {
+func post(amount_wid string, balance *int, txn_times_limit *int) string {
 
-	var amount_wid_int = amount_wid
+	var amount_wid_int int
+	amount_wid_int, err := strconv.Atoi(amount_wid)
+	if err != nil {
+		return "Not a valid integer."
+	}
 
 	if *txn_times_limit < 1 {
 		getbody += " " + "Per day transaction attempts limit exceeded"
