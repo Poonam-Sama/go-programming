@@ -21,8 +21,8 @@ func main() {
 	const (
 		Username    = "YOUR_USERNAME"
 		Password    = "YOUR_PASS"
-		myDatabase  = "DATABASE_1"
-		Collection1 = "BAL_COLL_1"
+		myDatabase  = "USER_DATABASE"
+		Collection1 = "BALANCE_COLLECTION"
 	)
 	session, err := mgo.DialWithInfo(&mgo.DialInfo{
 		Addrs: Host,
